@@ -1,0 +1,33 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SmartCV AI mark</title>
+  <desc id="desc">Gradient geometric SmartCV AI brand mark.</desc>
+  <defs>
+    <linearGradient id="smartcv-mark-gradient" x1="8" y1="6" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.52" stop-color="#5B4BFF"/>
+      <stop offset="1" stop-color="#9333EA"/>
+    </linearGradient>
+    <linearGradient id="smartcv-spark-gradient" x1="12" y1="7" x2="33" y2="25" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#C7D2FE"/>
+    </linearGradient>
+    <filter id="smartcv-shadow" x="2" y="3" width="44" height="43" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="3"/>
+      <feGaussianBlur stdDeviation="3"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.259 0 0 0 0 0.227 0 0 0 0 0.925 0 0 0 0.26 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="#EEF2FF"/>
+  <g filter="url(#smartcv-shadow)">
+    <path d="M24.007 7.5 39 16.25v15.5L24.007 40.5 9 31.75v-15.5L24.007 7.5Z" fill="url(#smartcv-mark-gradient)"/>
+    <path d="M24.007 12.25 34.892 18.6v3.705L24.007 15.94 13.108 22.305V18.6l10.899-6.35Z" fill="url(#smartcv-spark-gradient)" fill-opacity=".92"/>
+    <path d="m13.108 25.695 10.9 6.364 10.884-6.364V29.4L24.007 35.75 13.108 29.4v-3.705Z" fill="white" fill-opacity=".88"/>
+    <path d="m24.007 19.398 10.885 6.35-10.885 6.35-10.899-6.35 10.899-6.35Zm0 3.704-4.548 2.646 4.548 2.646 4.534-2.646-4.534-2.646Z" fill="white"/>
+  </g>
+  <path d="M15.25 10.25 16.35 13l2.9 1.1-2.9 1.1-1.1 2.8-1.1-2.8-2.9-1.1 2.9-1.1 1.1-2.75Z" fill="#4F46E5"/>
+  <path d="M35.25 8.75 35.9 10.35l1.6.65-1.6.65-.65 1.6-.65-1.6-1.6-.65 1.6-.65.65-1.6Z" fill="#7C3AED"/>
+</svg>
