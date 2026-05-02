@@ -7,6 +7,7 @@ import { Download, Gauge, LayoutDashboard, RotateCcw, Upload, X } from 'lucide-r
 import { downloadBlob } from '@/lib/utils'
 import { UploadResume } from './upload/UploadResume'
 import { BrandLogo } from '@/components/saas/brand-logo'
+import { ThemeToggle } from '@/components/saas/theme-toggle'
 
 export function BuilderHeader() {
   const { resume, atsResult, resetResume } = useResumeStore()
@@ -32,7 +33,7 @@ export function BuilderHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 px-5 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-card/90 border-b border-border px-5 py-3 flex items-center justify-between backdrop-blur-xl">
         <BrandLogo className="hidden sm:inline-flex" />
         <BrandLogo compact className="sm:hidden" />
 
@@ -45,8 +46,10 @@ export function BuilderHeader() {
                   'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'}`}>
                 ATS {score}/100
               </span>
-            </Link>
-          )}
+        </Link>
+      )}
+
+          <ThemeToggle />
 
           <button
             onClick={() => setShowUpload(true)}
@@ -88,12 +91,12 @@ export function BuilderHeader() {
           className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setShowUpload(false) }}
         >
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-slide-up">
+          <div className="bg-card text-card-foreground rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-slide-up border border-border">
             <button
               onClick={() => setShowUpload(false)}
-              className="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 w-7 h-7 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
             >
-              <X size={14} className="text-slate-500" />
+              <X size={14} className="text-muted-foreground" />
             </button>
             <UploadResume
               onSuccess={() => setShowUpload(false)}

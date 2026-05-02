@@ -1,194 +1,285 @@
 'use client'
 
-import { useState } from 'react'
+import { ChangeEvent, useMemo, useState } from 'react'
 import { useResumeStore } from '@/store/resumeStore'
-import { Loader2, Zap, CheckCircle2, AlertTriangle, XCircle, Info, Sparkles } from 'lucide-react'
+import {
+  AlertTriangle,
+  CheckCircle2,
+  FileText,
+  Info,
+  Loader2,
+  Sparkles,
+  Upload,
+  XCircle,
+  Zap,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { ATSResult, ATSIssue } from '@/types'
-
-// ─── Score Ring ───────────────────────────────────────────────────────────────
+import type { ATSIssue, ATSResult, ResumeData } from '@/types'
 
 function ScoreRing({ score }: { score: number }) {
   const r = 42
   const circ = 2 * Math.PI * r
   const offset = circ - (score / 100) * circ
-  const color = score >= 75 ? '#0d9488' : score >= 55 ? '#f59e0b' : '#ef4444'
+  const color = score >= 75 ? '#4f46e5' : score >= 55 ? '#f59e0b' : '#ef4444'
   const grade = score >= 93 ? 'A+' : score >= 87 ? 'A' : score >= 82 ? 'B+' : score >= 75 ? 'B' : score >= 68 ? 'C+' : score >= 60 ? 'C' : score >= 50 ? 'D' : 'F'
 
   return (
     <div className="flex flex-col items-center">
-      <svg width="110" height="110" viewBox="0 0 110 110">
-        <circle cx="55" cy="55" r={r} fill="none" stroke="#e2e8f0" strokeWidth="8" />
+      <svg width="112" height="112" viewBox="0 0 112 112">
+        <circle cx="56" cy="56" r={r} fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-100 dark:text-white/10" />
         <circle
-          cx="55" cy="55" r={r}
+          cx="56"
+          cy="56"
+          r={r}
           fill="none"
           stroke={color}
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={offset}
-          transform="rotate(-90 55 55)"
+          transform="rotate(-90 56 56)"
           style={{ transition: 'stroke-dashoffset 1.2s ease-out, stroke 0.4s' }}
         />
-        <text x="55" y="50" textAnchor="middle" fontSize="22" fontWeight="700" fill={color} fontFamily="system-ui">{score}</text>
-        <text x="55" y="64" textAnchor="middle" fontSize="9" fill="#94a3b8" fontFamily="system-ui">out of 100</text>
-        <text x="55" y="78" textAnchor="middle" fontSize="13" fontWeight="700" fill={color} fontFamily="system-ui">{grade}</text>
+        <text x="56" y="52" textAnchor="middle" fontSize="24" fontWeight="800" fill={color} fontFamily="system-ui">{score}</text>
+        <text x="56" y="68" textAnchor="middle" fontSize="9" fill="#94a3b8" fontFamily="system-ui">out of 100</text>
+        <text x="56" y="82" textAnchor="middle" fontSize="13" fontWeight="800" fill={color} fontFamily="system-ui">{grade}</text>
       </svg>
-      <p className="text-xs font-medium text-slate-500 mt-1">
-        {score >= 75 ? 'Strong match' : score >= 55 ? 'Needs improvement' : 'Low match — action required'}
+      <p className="mt-1 text-xs font-medium text-muted-foreground">
+        {score >= 75 ? 'ATS-ready resume' : score >= 55 ? 'Needs improvement' : 'Needs major fixes'}
       </p>
     </div>
   )
 }
 
-// ─── Score Breakdown Bar ──────────────────────────────────────────────────────
-
 function ScoreBar({ label, value, weight }: { label: string; value: number; weight: string }) {
-  const color = value >= 75 ? '#0d9488' : value >= 50 ? '#f59e0b' : '#ef4444'
+  const color = value >= 75 ? '#4f46e5' : value >= 50 ? '#f59e0b' : '#ef4444'
   return (
     <div className="mb-3">
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-xs text-slate-600">{label}</span>
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">{label}</span>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400">{weight} weight</span>
+          <span className="text-xs text-muted-foreground">{weight}</span>
           <span className="text-xs font-semibold" style={{ color }}>{value}%</span>
         </div>
       </div>
-      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${value}%`, background: color }}
-        />
+      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${value}%`, background: color }} />
       </div>
     </div>
   )
 }
 
-// ─── Issue Card ───────────────────────────────────────────────────────────────
-
 const ISSUE_STYLES: Record<ATSIssue['type'], { bg: string; border: string; icon: React.ElementType; iconColor: string }> = {
-  error:   { bg: 'bg-red-50',     border: 'border-red-200',     icon: XCircle,       iconColor: 'text-red-500' },
-  warning: { bg: 'bg-amber-50',   border: 'border-amber-200',   icon: AlertTriangle, iconColor: 'text-amber-500' },
-  success: { bg: 'bg-emerald-50', border: 'border-emerald-200', icon: CheckCircle2,  iconColor: 'text-emerald-500' },
-  info:    { bg: 'bg-blue-50',    border: 'border-blue-200',    icon: Info,          iconColor: 'text-blue-500' },
+  error: { bg: 'bg-red-50 dark:bg-red-400/10', border: 'border-red-200 dark:border-red-400/20', icon: XCircle, iconColor: 'text-red-500' },
+  warning: { bg: 'bg-amber-50 dark:bg-amber-400/10', border: 'border-amber-200 dark:border-amber-400/20', icon: AlertTriangle, iconColor: 'text-amber-500' },
+  success: { bg: 'bg-emerald-50 dark:bg-emerald-400/10', border: 'border-emerald-200 dark:border-emerald-400/20', icon: CheckCircle2, iconColor: 'text-emerald-500' },
+  info: { bg: 'bg-blue-50 dark:bg-blue-400/10', border: 'border-blue-200 dark:border-blue-400/20', icon: Info, iconColor: 'text-blue-500' },
 }
 
 function IssueCard({ issue }: { issue: ATSIssue }) {
   const style = ISSUE_STYLES[issue.type]
   const Icon = style.icon
+
   return (
-    <div className={cn('rounded-xl border p-3', style.bg, style.border)}>
+    <div className={cn('rounded-2xl border p-3', style.bg, style.border)}>
       <div className="flex items-start gap-2">
-        <Icon size={14} className={cn('mt-0.5 flex-shrink-0', style.iconColor)} />
+        <Icon size={15} className={cn('mt-0.5 flex-shrink-0', style.iconColor)} />
         <div>
-          <p className="text-xs font-semibold text-slate-700">{issue.title}</p>
-          <p className="text-xs text-slate-500 mt-0.5">{issue.description}</p>
-          {issue.fix && (
-            <p className="text-xs text-slate-600 mt-1 font-medium">→ {issue.fix}</p>
-          )}
+          <p className="text-xs font-semibold text-foreground">{issue.title}</p>
+          <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{issue.description}</p>
+          {issue.fix && <p className="mt-1 text-xs font-medium text-foreground">{issue.fix}</p>}
         </div>
       </div>
     </div>
   )
 }
 
-// ─── Main ATS Checker ─────────────────────────────────────────────────────────
+function hasResumeContent(resume: ResumeData) {
+  return Boolean(
+    resume.personal.firstName ||
+    resume.personal.email ||
+    resume.summary ||
+    resume.experiences.length ||
+    resume.skills.length,
+  )
+}
 
 export function ATSChecker() {
-  const { resume, jobDescription, setJobDescription, atsResult, setATSResult } = useResumeStore()
+  const { resume, atsResult, setATSResult } = useResumeStore()
+  const [mode, setMode] = useState<'builder' | 'upload'>('builder')
   const [analyzing, setAnalyzing] = useState(false)
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiSuggestions, setAiSuggestions] = useState<string[]>([])
-  const [bulletRewrites, setBulletRewrites] = useState<{ original: string; improved: string }[]>([])
+  const [uploading, setUploading] = useState(false)
+  const [uploadedName, setUploadedName] = useState('')
+  const [uploadedResume, setUploadedResume] = useState<ResumeData | null>(null)
+  const [error, setError] = useState('')
+  const [improvementPlan, setImprovementPlan] = useState<string[]>([])
 
-  async function runAnalysis() {
-    if (!jobDescription.trim()) return
+  const result = atsResult
+  const activeResume = mode === 'builder' ? resume : uploadedResume
+
+  const detectedLabel = useMemo(() => {
+    if (mode === 'builder') return 'Current builder resume'
+    if (uploadedName) return uploadedName
+    return 'Uploaded resume'
+  }, [mode, uploadedName])
+
+  async function analyzeResume(targetResume = activeResume) {
+    if (!targetResume) return
+
     setAnalyzing(true)
-    setAiSuggestions([])
-    setBulletRewrites([])
+    setError('')
+    setImprovementPlan([])
+
     try {
       const res = await fetch('/api/ats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resume, jobDescription }),
+        body: JSON.stringify({ resume: targetResume }),
       })
       const data = await res.json()
-      if (data.result) setATSResult(data.result)
+
+      if (!res.ok) throw new Error(data.error || 'Failed to analyze resume.')
+      if (data.result) setATSResult(data.result as ATSResult)
     } catch (err) {
-      console.error(err)
+      setError(err instanceof Error ? err.message : 'Failed to analyze resume.')
+    } finally {
+      setAnalyzing(false)
     }
-    setAnalyzing(false)
   }
 
-  async function fetchAISuggestions() {
-    if (!atsResult) return
-    setAiLoading(true)
+  function selectMode(nextMode: 'builder' | 'upload') {
+    setMode(nextMode)
+    setError('')
+    setImprovementPlan([])
+    setATSResult(null)
+  }
+
+  async function handleUpload(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setMode('upload')
+    setUploading(true)
+    setError('')
+    setImprovementPlan([])
+    setATSResult(null)
+    setUploadedName(file.name)
+
     try {
-      const res = await fetch('/api/ai-suggest', {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const parseRes = await fetch('/api/ats-upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resume, jobDescription, atsResult }),
+        body: formData,
       })
-      const data = await res.json()
-      if (data.suggestions) setAiSuggestions(data.suggestions)
-      if (data.bulletRewrites) setBulletRewrites(data.bulletRewrites)
-    } catch {
-      setAiSuggestions([
-        'Add missing keywords from the job description into your skills section.',
-        'Quantify your achievements with specific numbers and percentages.',
-        'Mirror the job title exactly in your professional headline.',
-        'Expand your summary to address the top 3 requirements in the JD.',
-        'Add any missing certifications relevant to this role.',
-      ])
+      const parsed = await parseRes.json()
+
+      if (!parseRes.ok) throw new Error(parsed.error || 'Failed to read uploaded resume.')
+
+      setUploadedResume(parsed.resume as ResumeData)
+      if (parsed.result) setATSResult(parsed.result as ATSResult)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not analyze uploaded resume.')
+    } finally {
+      setUploading(false)
+      event.target.value = ''
     }
-    setAiLoading(false)
   }
 
-  const result = atsResult
+  function buildImprovementPlan() {
+    if (!result) return
+
+    const fixes = result.issues
+      .filter((issue) => issue.type !== 'success')
+      .map((issue) => issue.fix || issue.description)
+
+    setImprovementPlan(
+      fixes.length
+        ? fixes
+        : [
+            'Your resume is in strong ATS shape. Keep tailoring skills and achievements for each role.',
+            'Use the builder to create role-specific versions for different applications.',
+          ],
+    )
+  }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Left: JD Input */}
-      <div>
-        <div className="card p-5 mb-4">
-          <h3 className="text-sm font-semibold text-slate-800 mb-1">Paste Job Description</h3>
-          <p className="text-xs text-slate-400 mb-3">The more complete the JD, the more accurate your score</p>
-          <textarea
-            className="textarea-base min-h-[220px] font-mono text-xs"
-            placeholder={`Paste the full job description here...
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="space-y-4">
+        <div className="card p-5">
+          <h3 className="text-sm font-semibold text-foreground">Choose resume source</h3>
+          <p className="mt-1 text-xs text-muted-foreground">Check ATS readiness from your current builder resume or upload an existing resume file.</p>
 
-Example:
-We're looking for a Senior React Developer with 4+ years of experience in TypeScript, Node.js, and AWS. You'll lead frontend architecture, write clean scalable code, mentor junior developers, and collaborate with product teams to ship features...`}
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-          />
-          <button
-            onClick={runAnalysis}
-            disabled={analyzing || !jobDescription.trim()}
-            className="btn-primary w-full mt-3 justify-center"
-          >
-            {analyzing ? (
-              <><Loader2 size={14} className="animate-spin" /> Analyzing resume...</>
-            ) : (
-              <><Zap size={14} /> Analyze ATS Compatibility</>
-            )}
-          </button>
+          <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-muted p-1">
+            {[
+              { id: 'builder', label: 'Built Resume', icon: FileText },
+              { id: 'upload', label: 'Upload PDF/DOCX', icon: Upload },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => selectMode(id as 'builder' | 'upload')}
+                className={cn(
+                  'flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-all',
+                  mode === id ? 'bg-card text-indigo-600 shadow-sm dark:text-indigo-200' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                <Icon size={15} />
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {mode === 'builder' ? (
+            <div className="mt-5 rounded-2xl border border-border bg-card p-4">
+              <p className="text-sm font-semibold text-foreground">Current builder resume</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {hasResumeContent(resume)
+                  ? 'Analyze the resume you are building right now.'
+                  : 'Your builder resume is empty. Add contact info, summary, experience, and skills first.'}
+              </p>
+              <button
+                onClick={() => analyzeResume(resume)}
+                disabled={analyzing || !hasResumeContent(resume)}
+                className="btn-primary mt-4 w-full justify-center"
+              >
+                {analyzing ? <><Loader2 size={14} className="animate-spin" /> Checking resume...</> : <><Zap size={14} /> Check Built Resume</>}
+              </button>
+            </div>
+          ) : (
+            <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-card p-8 text-center transition-colors hover:border-indigo-300 hover:bg-muted">
+              <input className="hidden" type="file" accept=".pdf,.doc,.docx" onChange={handleUpload} />
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-200">
+                {uploading ? <Loader2 size={22} className="animate-spin" /> : <Upload size={22} />}
+              </div>
+              <p className="mt-3 text-sm font-semibold text-foreground">
+                {uploading ? 'Reading resume...' : uploadedName || 'Upload resume file'}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">PDF, DOC, or DOCX. SmartCV AI will parse and score the resume.</p>
+            </label>
+          )}
+
+          {error && (
+            <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-700 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-200">
+              {error}
+            </div>
+          )}
         </div>
 
-        {/* Resume completeness tip */}
         {!result && (
-          <div className="card p-4 bg-slate-50 border-slate-100">
-            <p className="text-xs font-semibold text-slate-600 mb-2">How scoring works</p>
-            <div className="space-y-1.5 text-xs text-slate-500">
+          <div className="card p-5">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">How resume-only ATS scoring works</p>
+            <div className="mt-4 space-y-2 text-xs text-muted-foreground">
               {[
-                ['35%', 'Keyword match vs. job description'],
-                ['25%', 'Resume structure (summary, sections)'],
-                ['15%', 'Contact info completeness'],
-                ['15%', 'Action verbs in experience bullets'],
-                ['10%', 'Job title alignment with JD'],
+                ['30%', 'ATS keyword signal from skills, tools, and resume language'],
+                ['30%', 'Resume structure and section completeness'],
+                ['15%', 'Contact information completeness'],
+                ['15%', 'Action verbs and achievement quality'],
+                ['10%', 'Headline/title clarity'],
               ].map(([w, l]) => (
                 <div key={w} className="flex gap-2">
-                  <span className="font-semibold text-teal-600 w-8 flex-shrink-0">{w}</span>
+                  <span className="w-9 flex-shrink-0 font-semibold text-indigo-600">{w}</span>
                   <span>{l}</span>
                 </div>
               ))}
@@ -196,118 +287,88 @@ We're looking for a Senior React Developer with 4+ years of experience in TypeSc
           </div>
         )}
 
-        {/* AI Suggestions */}
         {result && (
           <div className="card p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Sparkles size={14} className="text-teal-600" />
-                <h3 className="text-sm font-semibold text-slate-800">AI Improvement Tips</h3>
-                <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">Claude AI</span>
-              </div>
+            <div className="mb-3 flex items-center gap-2">
+              <Sparkles size={14} className="text-indigo-600" />
+              <h3 className="text-sm font-semibold text-foreground">Improvement plan</h3>
             </div>
 
-            {aiSuggestions.length === 0 ? (
-              <button
-                onClick={fetchAISuggestions}
-                disabled={aiLoading}
-                className="btn-primary w-full justify-center"
-              >
-                {aiLoading ? <><Loader2 size={14} className="animate-spin" /> Generating suggestions...</> : <><Sparkles size={14} /> Get Personalized Suggestions</>}
+            {improvementPlan.length === 0 ? (
+              <button onClick={buildImprovementPlan} className="btn-primary w-full justify-center">
+                <Sparkles size={14} />
+                Create Fix List
               </button>
             ) : (
               <div className="space-y-2">
-                {aiSuggestions.map((s, i) => (
-                  <div key={i} className="flex gap-2.5 p-2.5 bg-teal-50 rounded-lg border border-teal-100">
-                    <span className="text-teal-600 font-semibold text-xs flex-shrink-0 mt-0.5">{i + 1}.</span>
-                    <p className="text-xs text-slate-700 leading-relaxed">{s}</p>
+                {improvementPlan.map((item, index) => (
+                  <div key={item} className="flex gap-2.5 rounded-2xl border border-indigo-100 bg-indigo-50 p-3 dark:border-indigo-400/20 dark:bg-indigo-400/10">
+                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">{index + 1}</span>
+                    <p className="text-xs leading-5 text-foreground">{item}</p>
                   </div>
                 ))}
-
-                {bulletRewrites.length > 0 && (
-                  <div className="mt-4">
-                    <p className="text-xs font-semibold text-slate-600 mb-2">Suggested bullet rewrites:</p>
-                    {bulletRewrites.map((rw, i) => (
-                      <div key={i} className="mb-3 text-xs">
-                        <p className="text-red-600 line-through bg-red-50 px-2 py-1 rounded mb-1">{rw.original}</p>
-                        <p className="text-emerald-700 bg-emerald-50 px-2 py-1 rounded border-l-2 border-emerald-500">{rw.improved}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* Right: Results */}
       <div>
         {result ? (
           <div className="space-y-4 animate-fade-in">
-            {/* Score ring + breakdown */}
             <div className="card p-5">
-              <div className="flex gap-6 items-start">
+              <div className="mb-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">ATS report</p>
+                <h3 className="mt-1 text-lg font-bold text-foreground">{detectedLabel}</h3>
+              </div>
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
                 <ScoreRing score={result.score.total} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Score Breakdown</p>
-                  <ScoreBar label="Keyword Match"    value={result.score.keywordMatch}    weight="35%" />
-                  <ScoreBar label="Resume Structure" value={result.score.structure}        weight="25%" />
-                  <ScoreBar label="Contact Info"     value={result.score.contactInfo}      weight="15%" />
-                  <ScoreBar label="Action Verbs"     value={result.score.actionVerbs}      weight="15%" />
-                  <ScoreBar label="Title Alignment"  value={result.score.titleAlignment}   weight="10%" />
+                <div className="min-w-0 flex-1">
+                  <ScoreBar label="Keyword Signal" value={result.score.keywordMatch} weight="30%" />
+                  <ScoreBar label="Resume Structure" value={result.score.structure} weight="30%" />
+                  <ScoreBar label="Contact Info" value={result.score.contactInfo} weight="15%" />
+                  <ScoreBar label="Action Verbs" value={result.score.actionVerbs} weight="15%" />
+                  <ScoreBar label="Headline Clarity" value={result.score.titleAlignment} weight="10%" />
                 </div>
               </div>
             </div>
 
-            {/* Issues */}
             <div className="card p-5">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Diagnostic Checks</p>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Diagnostic checks</p>
               <div className="grid grid-cols-1 gap-2">
-                {result.issues.map((issue, i) => <IssueCard key={i} issue={issue} />)}
+                {result.issues.map((issue, index) => <IssueCard key={`${issue.title}-${index}`} issue={issue} />)}
               </div>
             </div>
 
-            {/* Keywords */}
             <div className="card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Keyword Analysis</p>
-                <span className="text-xs text-slate-400">
-                  {result.keywords.found.length + result.keywords.partial.length} / {result.keywords.total} matched
-                </span>
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Detected ATS keywords</p>
+                <span className="text-xs text-muted-foreground">{result.keywords.found.length} found</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {result.keywords.found.map((kw) => (
-                  <span key={kw} className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
-                    ✓ {kw}
+                {result.keywords.found.length ? result.keywords.found.map((kw) => (
+                  <span key={kw} className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+                    {kw}
                   </span>
-                ))}
-                {result.keywords.partial.map((kw) => (
-                  <span key={kw} className="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">
-                    ~ {kw}
-                  </span>
-                ))}
-                {result.keywords.missing.map((kw) => (
-                  <span key={kw} className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
-                    ✗ {kw}
-                  </span>
-                ))}
+                )) : (
+                  <p className="text-xs text-muted-foreground">No strong skills or ATS keywords detected yet.</p>
+                )}
               </div>
               {result.keywords.missing.length > 0 && (
-                <p className="text-xs text-slate-400 mt-3">
-                  Add the red keywords naturally to your experience bullets, skills, or summary.
+                <p className="mt-3 text-xs text-muted-foreground">
+                  Add more role-specific language such as {result.keywords.missing.slice(0, 4).join(', ')}.
                 </p>
               )}
             </div>
           </div>
         ) : (
-          <div className="card p-10 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-            <div className="w-14 h-14 rounded-2xl bg-teal-50 flex items-center justify-center mb-4">
-              <Zap size={24} className="text-teal-500" />
+          <div className="card flex h-full min-h-[360px] flex-col items-center justify-center p-10 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-200">
+              <Zap size={24} />
             </div>
-            <h3 className="text-sm font-semibold text-slate-700 mb-2">Ready to analyze</h3>
-            <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
-              Paste a job description on the left and click Analyze to see your ATS compatibility score, keyword gaps, and improvement tips.
+            <h3 className="text-sm font-semibold text-foreground">Ready to check resume ATS health</h3>
+            <p className="mt-2 max-w-xs text-xs leading-6 text-muted-foreground">
+              Analyze your built resume or upload a PDF/DOCX resume to see structure, keyword signal, contact completeness, action verbs, and fixes.
             </p>
           </div>
         )}

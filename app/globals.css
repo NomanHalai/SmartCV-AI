@@ -50,8 +50,8 @@
 
 @layer components {
   .input-base {
-    @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm
-      text-slate-900 placeholder:text-slate-400 outline-none
+    @apply w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm
+      text-foreground placeholder:text-muted-foreground outline-none
       focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
       transition-all duration-150;
   }
@@ -70,24 +70,24 @@
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-2xl border
-      border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700
-      shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50
+      border-border bg-card px-5 py-3 text-sm font-semibold text-foreground
+      shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted
       hover:shadow-md active:scale-[0.98];
   }
 
   .btn-ghost {
     @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-md
-      text-slate-500 text-sm hover:bg-slate-100 hover:text-slate-700
+      text-muted-foreground text-sm hover:bg-muted hover:text-foreground
       transition-all duration-150;
   }
 
   .card {
-    @apply rounded-2xl border border-white/70 bg-white/90 shadow-soft backdrop-blur;
+    @apply rounded-2xl border border-border bg-card text-card-foreground shadow-soft backdrop-blur;
   }
 
   .section-heading {
-    @apply text-xs font-semibold uppercase tracking-widest text-slate-400
-      border-b border-slate-100 pb-1.5 mb-3;
+    @apply text-xs font-semibold uppercase tracking-widest text-muted-foreground
+      border-b border-border pb-1.5 mb-3;
   }
 
   .badge {
@@ -95,7 +95,7 @@
   }
 
   .badge-teal {
-    @apply badge bg-teal-50 text-teal-700 border border-teal-200;
+    @apply badge bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-400/10 dark:text-indigo-200 dark:border-indigo-400/20;
   }
 
   .badge-red {
@@ -111,7 +111,7 @@
   }
 
   .glass-card {
-    @apply rounded-2xl border border-white/70 bg-white/70 shadow-soft backdrop-blur-xl;
+    @apply rounded-2xl border border-border bg-card/70 shadow-soft backdrop-blur-xl;
   }
 
   .gradient-text {
@@ -119,7 +119,7 @@
   }
 
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 

@@ -24,6 +24,9 @@ import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { BrandLogo } from '@/components/saas/brand-logo'
+import { ProtectedRoute } from '@/components/saas/protected-route'
+import { ThemeToggle } from '@/components/saas/theme-toggle'
+import { useAuth } from '@/components/saas/auth-provider'
 import { ScoreRing } from '@/components/saas/score-ring'
 import { TemplateCard } from '@/components/saas/template-card'
 import { assistantActions, dashboardMetrics, recentResumes, templates } from '@/components/saas/product-data'
@@ -37,10 +40,13 @@ const nav = [
 ]
 
 export default function DashboardPage() {
+  const { user, logout } = useAuth()
+
   return (
-    <main className="min-h-screen bg-slate-50/70 dark:bg-slate-950">
+    <ProtectedRoute>
+    <main className="min-h-screen bg-background">
       <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
-        <aside className="hidden border-r border-slate-200/80 bg-white/90 p-5 backdrop-blur-xl lg:block dark:border-white/10 dark:bg-white/5">
+        <aside className="hidden border-r border-border bg-card/90 p-5 backdrop-blur-xl lg:block">
           <BrandLogo />
           <Button href="/builder" className="mt-8 w-full">
             <Plus size={16} />
@@ -77,28 +83,30 @@ export default function DashboardPage() {
         </aside>
 
         <section className="min-w-0">
-          <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 px-4 py-4 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/80">
+          <header className="sticky top-0 z-40 border-b border-border bg-card/80 px-4 py-4 backdrop-blur-xl">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 lg:hidden">
                 <Button variant="secondary" size="icon" aria-label="Open navigation"><Menu size={18} /></Button>
                 <BrandLogo compact />
               </div>
-              <div className="hidden min-w-0 flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-500 lg:flex dark:border-white/10 dark:bg-white/5">
+              <div className="hidden min-w-0 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground lg:flex">
                 <Search size={16} />
                 Search resumes, templates, keywords...
               </div>
               <div className="flex items-center gap-3">
                 <Button variant="secondary" className="hidden md:inline-flex"><UploadCloud size={16} /> Import resume</Button>
+                <ThemeToggle />
                 <Button variant="secondary" size="icon" aria-label="Notifications"><Bell size={18} /></Button>
-                <div className="hidden items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 md:flex dark:border-white/10 dark:bg-white/5">
+                <div className="hidden items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2 md:flex">
                   <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-200">
                     <UserRound size={16} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-950 dark:text-white">John Doe</p>
-                    <p className="text-[11px] text-slate-500">john@email.com</p>
+                    <p className="text-xs font-bold text-slate-950 dark:text-white">{user?.name || 'SmartCV User'}</p>
+                    <p className="text-[11px] text-muted-foreground">{user?.email || 'user@email.com'}</p>
                   </div>
                 </div>
+                <Button type="button" variant="ghost" onClick={logout} className="hidden lg:inline-flex">Log out</Button>
               </div>
             </div>
           </header>
@@ -111,7 +119,7 @@ export default function DashboardPage() {
                   AI career workspace
                 </Badge>
                 <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 md:text-4xl dark:text-white">Dashboard</h1>
-                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Welcome back, John. Your resume pipeline is getting sharper.</p>
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Welcome back, {user?.name?.split(' ')[0] || 'there'}. Your resume pipeline is getting sharper.</p>
               </div>
               <Button href="/builder">Create resume <Plus size={16} /></Button>
             </div>
@@ -250,5 +258,6 @@ export default function DashboardPage() {
         </section>
       </div>
     </main>
+    </ProtectedRoute>
   )
 }

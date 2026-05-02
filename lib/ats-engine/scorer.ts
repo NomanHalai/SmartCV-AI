@@ -233,7 +233,7 @@ function calculateGrade(score: number): ATSGrade {
 
 // ─── Issue Detection ──────────────────────────────────────────────────────────
 
-function detectIssues(resume: ResumeData, keywords: KeywordAnalysis): ATSIssue[] {
+function detectIssues(resume: ResumeData, keywords: KeywordAnalysis, mode: 'resume' | 'job' = 'job'): ATSIssue[] {
   const issues: ATSIssue[] = []
 
   // Contact info
@@ -260,23 +260,35 @@ function detectIssues(resume: ResumeData, keywords: KeywordAnalysis): ATSIssue[]
     issues.push({ type: 'success', title: 'Professional summary present', description: 'Summary section detected and will be parsed.' })
   }
 
-  // Keywords
-  if (keywords.score < 40) {
-    issues.push({
-      type: 'error',
-      title: 'Critical keyword gaps',
-      description: `Only ${keywords.found.length} of ${keywords.total} required keywords found.`,
-      fix: `Add these missing skills: ${keywords.missing.slice(0, 5).join(', ')}`,
-    })
-  } else if (keywords.score < 70) {
-    issues.push({
-      type: 'warning',
-      title: 'Keyword coverage needs improvement',
-      description: `${keywords.missing.length} keywords from the JD are missing from your resume.`,
-      fix: 'Incorporate missing keywords naturally in your experience bullets and skills.',
-    })
+  if (mode === 'job') {
+    if (keywords.score < 40) {
+      issues.push({
+        type: 'error',
+        title: 'Critical keyword gaps',
+        description: `Only ${keywords.found.length} of ${keywords.total} required keywords found.`,
+        fix: `Add these missing skills: ${keywords.missing.slice(0, 5).join(', ')}`,
+      })
+    } else if (keywords.score < 70) {
+      issues.push({
+        type: 'warning',
+        title: 'Keyword coverage needs improvement',
+        description: `${keywords.missing.length} keywords from the JD are missing from your resume.`,
+        fix: 'Incorporate missing keywords naturally in your experience bullets and skills.',
+      })
+    } else {
+      issues.push({ type: 'success', title: 'Strong keyword coverage', description: `${keywords.found.length}/${keywords.total} job keywords matched.` })
+    }
   } else {
-    issues.push({ type: 'success', title: 'Strong keyword coverage', description: `${keywords.found.length}/${keywords.total} job keywords matched.` })
+    if (keywords.score < 55) {
+      issues.push({
+        type: 'warning',
+        title: 'Resume keyword signal is light',
+        description: `${keywords.found.length} strong ATS keywords or skills were detected.`,
+        fix: 'Add role-specific tools, methods, certifications, and domain keywords in Skills and Experience.',
+      })
+    } else {
+      issues.push({ type: 'success', title: 'Strong resume keyword signal', description: `${keywords.found.length} ATS-readable skills and keywords detected.` })
+    }
   }
 
   // Quantification
@@ -297,7 +309,7 @@ function detectIssues(resume: ResumeData, keywords: KeywordAnalysis): ATSIssue[]
   issues.push({
     type: 'info',
     title: 'ATS-safe format',
-    description: 'Plain text format — no tables, columns, or graphics that confuse parsers.',
+    description: 'Readable resume sections detected. Avoid images, heavy graphics, and text embedded inside shapes.',
   })
 
   // LinkedIn
@@ -343,12 +355,91 @@ export function scoreResume(resume: ResumeData, jobDescription: string): ATSResu
     grade: calculateGrade(total),
   }
 
-  const issues = detectIssues(resume, keywordAnalysis)
+  const issues = detectIssues(resume, keywordAnalysis, 'job')
 
   return {
     score: scoreBreakdown,
     keywords: keywordAnalysis,
     issues,
+    suggestions: [],
+    timestamp: Date.now(),
+  }
+}
+
+function scoreResumeKeywordSignal(resume: ResumeData): KeywordAnalysis {
+  const resumeText = flattenResumeText(resume)
+  const found = new Set<string>()
+
+  for (const skill of [...TECH_SKILLS, ...SOFT_SKILLS]) {
+    if (resumeText.includes(skill)) found.add(skill)
+  }
+
+  resume.skills
+    .map((skill) => normalizeText(skill))
+    .filter((skill) => skill.length > 2)
+    .forEach((skill) => found.add(skill))
+
+  const recommended = [
+    'role-specific tools',
+    'industry keywords',
+    'certifications',
+    'methodologies',
+    'measurable outcomes',
+    'leadership keywords',
+    'technical stack',
+    'business impact',
+  ]
+
+  const foundList = [...found].slice(0, 30)
+  const score = Math.min(100, Math.round((foundList.length / 14) * 100))
+  const missing = recommended.filter((item) => !resumeText.includes(item)).slice(0, Math.max(0, 8 - Math.floor(foundList.length / 2)))
+
+  return {
+    found: foundList,
+    missing,
+    partial: [],
+    total: Math.max(foundList.length + missing.length, 1),
+    score,
+  }
+}
+
+function scoreHeadlineClarity(resume: ResumeData): number {
+  const title = resume.personal.jobTitle.trim()
+  if (!title) return 0
+  if (title.length < 4) return 35
+  if (title.split(/\s+/).length >= 2) return 100
+  return 70
+}
+
+export function scoreResumeHealth(resume: ResumeData): ATSResult {
+  const keywordAnalysis = scoreResumeKeywordSignal(resume)
+  const structureScore = scoreStructure(resume)
+  const contactScore = scoreContactInfo(resume)
+  const actionVerbScore = scoreActionVerbs(resume)
+  const titleScore = scoreHeadlineClarity(resume)
+
+  const total = Math.round(
+    keywordAnalysis.score * 0.30 +
+    structureScore * 0.30 +
+    contactScore * 0.15 +
+    actionVerbScore * 0.15 +
+    titleScore * 0.10
+  )
+
+  const scoreBreakdown: ATSScoreBreakdown = {
+    keywordMatch: keywordAnalysis.score,
+    structure: structureScore,
+    contactInfo: contactScore,
+    actionVerbs: actionVerbScore,
+    titleAlignment: titleScore,
+    total,
+    grade: calculateGrade(total),
+  }
+
+  return {
+    score: scoreBreakdown,
+    keywords: keywordAnalysis,
+    issues: detectIssues(resume, keywordAnalysis, 'resume'),
     suggestions: [],
     timestamp: Date.now(),
   }

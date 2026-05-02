@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 import { BrandLogo } from '@/components/saas/brand-logo'
 import { TemplateCard } from '@/components/saas/template-card'
 import { templates } from '@/components/saas/product-data'
+import { ThemeToggle } from '@/components/saas/theme-toggle'
 
 const categories = ['All', 'Executive', 'Engineering', 'Product', 'Design', 'Marketing', 'Graduate']
 
@@ -17,6 +18,7 @@ export default function TemplatesPage() {
       <header className="mx-auto flex max-w-7xl items-center justify-between">
         <BrandLogo />
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Button href="/dashboard" variant="secondary">Dashboard</Button>
           <Button href="/builder">Use template</Button>
         </div>

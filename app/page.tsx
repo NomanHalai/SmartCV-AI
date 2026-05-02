@@ -15,8 +15,10 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { BrandLogo } from '@/components/saas/brand-logo'
+import { AuthActions } from '@/components/saas/auth-actions'
 import { ResumeMockup } from '@/components/saas/resume-mockup'
 import { TemplateCard } from '@/components/saas/template-card'
+import { ThemeToggle } from '@/components/saas/theme-toggle'
 import {
   faqs,
   features,
@@ -47,8 +49,8 @@ export default function HomePage() {
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <Button href="/auth/login" variant="ghost" className="hidden sm:inline-flex">Log in</Button>
-            <Button href="/builder">Get Started <ArrowRight size={16} /></Button>
+            <ThemeToggle />
+            <AuthActions />
           </div>
         </div>
       </header>
@@ -114,7 +116,7 @@ export default function HomePage() {
             <Badge className="border-indigo-400/20 bg-white/10 text-indigo-100">ATS optimization</Badge>
             <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">Know exactly why a resume will pass or stall</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
-              Paste a job description and SmartCV AI scores keyword coverage, structure, action verbs, role alignment, and formatting quality.
+              Upload a resume or scan your builder draft. SmartCV AI scores keyword signal, structure, action verbs, headline clarity, and formatting quality.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {trustItems.map(({ label, icon: Icon }) => (

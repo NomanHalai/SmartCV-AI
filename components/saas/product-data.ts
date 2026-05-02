@@ -35,7 +35,7 @@ export const features = [
   {
     icon: Gauge,
     title: 'ATS Optimization',
-    description: 'Score every resume against a job description and see keyword gaps before you apply.',
+    description: 'Score every built or uploaded resume for ATS structure, keyword signal, readability, and missing recruiter signals.',
   },
   {
     icon: LayoutTemplate,
@@ -200,8 +200,8 @@ export const faqs = [
     answer: 'It speeds up drafting and optimization, then gives you a clear quality signal before you send applications.',
   },
   {
-    question: 'Do I need a job description?',
-    answer: 'You can build without one, but ATS scoring and keyword recommendations become much stronger when you paste the role description.',
+    question: 'Can I scan a resume without a job description?',
+    answer: 'No. The ATS checker can scan your built resume or an uploaded PDF/DOCX resume directly for structure, keyword signal, and formatting readiness.',
   },
 ]
 

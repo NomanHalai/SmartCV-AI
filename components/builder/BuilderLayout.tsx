@@ -33,17 +33,17 @@ export function BuilderLayout() {
   const ActiveSection = SECTIONS[activeStep]
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50 overflow-hidden">
+    <div className="flex flex-col h-screen bg-background overflow-hidden">
       <BuilderHeader />
       <div className="flex flex-1 overflow-hidden">
         <BuilderSidebar />
-        <main className="flex-1 overflow-y-auto bg-slate-50 p-6">
+        <main className="flex-1 overflow-y-auto bg-background p-6">
           <div className="mx-auto grid max-w-6xl gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0 animate-slide-up">
-              <div className="mb-5 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-soft backdrop-blur">
+              <div className="mb-5 rounded-3xl border border-border bg-card/80 p-4 shadow-soft backdrop-blur">
                 <div className="flex flex-wrap gap-2">
                   {builderSteps.map(({ label, icon: Icon, complete }) => (
-                    <div key={label} className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600">
+                    <div key={label} className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground">
                       {complete ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Icon size={14} className="text-indigo-500" />}
                       {label}
                     </div>
@@ -81,7 +81,7 @@ export function BuilderLayout() {
             </aside>
           </div>
         </main>
-        <aside className="hidden w-[380px] min-w-[380px] border-l border-slate-200 bg-white overflow-y-auto 2xl:block">
+        <aside className="hidden w-[380px] min-w-[380px] border-l border-border bg-card overflow-y-auto 2xl:block">
           <ResumePreview />
         </aside>
       </div>

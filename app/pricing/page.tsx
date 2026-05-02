@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { BrandLogo } from '@/components/saas/brand-logo'
 import { pricingPlans } from '@/components/saas/product-data'
+import { ThemeToggle } from '@/components/saas/theme-toggle'
 
 export default function PricingPage() {
   return (
@@ -13,6 +14,7 @@ export default function PricingPage() {
       <header className="mx-auto flex max-w-7xl items-center justify-between">
         <BrandLogo />
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Button href="/auth/login" variant="ghost">Log in</Button>
           <Button href="/builder">Start free</Button>
         </div>

@@ -78,6 +78,14 @@ smartcv-ai/
 - `framer-motion`, `lucide-react`, Tailwind, and the existing resume/AI dependencies are retained
 - Removed `@types/mammoth` because that package does not exist in npm; `mammoth` is kept
 
+## Auth And Theme Notes
+
+- The app now includes a client-side auth session layer for login/register/logout flows.
+- Protected screens redirect unauthenticated users to `/auth/login`.
+- Current auth storage is local browser storage, intended as a working UI/demo auth layer.
+- For production accounts, replace the local auth provider with a real provider such as Supabase Auth, Clerk, Auth.js, or Netlify-compatible external auth.
+- Light/dark mode is handled by a shared theme provider and persisted in local storage.
+
 ## Run Locally
 
 ```bash

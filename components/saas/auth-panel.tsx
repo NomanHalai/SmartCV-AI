@@ -1,15 +1,35 @@
+'use client'
+
+import { FormEvent, useState } from 'react'
 import { ArrowRight, CheckCircle2, Github, Mail, ShieldCheck, Sparkles } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { BrandLogo } from './brand-logo'
+import { ThemeToggle } from './theme-toggle'
+import { useAuth } from './auth-provider'
 
 export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
   const isLogin = mode === 'login'
+  const { login, register } = useAuth()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!email || !password) return
+
+    if (isLogin) {
+      login(email, password)
+    } else {
+      register(name, email, password)
+    }
+  }
 
   return (
-    <main className="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
-      <section className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+    <main className="grid min-h-screen bg-background lg:grid-cols-[0.95fr_1.05fr]">
+      <section className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between dark:bg-black">
         <div className="flex items-center gap-3">
           <BrandLogo compact />
           <span className="text-xl font-bold tracking-tight text-white">SmartCV AI</span>
@@ -35,7 +55,10 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
         </div>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-4 py-10">
+      <section className="relative flex min-h-screen items-center justify-center px-4 py-10">
+        <div className="absolute right-5 top-5">
+          <ThemeToggle />
+        </div>
         <Card className="w-full max-w-md p-6 sm:p-8">
           <div className="mb-8 lg:hidden">
             <BrandLogo />
@@ -49,11 +72,11 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
           </p>
 
           <div className="mt-8 space-y-3">
-            <Button variant="secondary" className="w-full">
+            <Button type="button" variant="secondary" className="w-full" onClick={() => login('github.user@smartcv.ai', 'demo')}>
               <Github size={17} />
               Continue with GitHub
             </Button>
-            <Button variant="secondary" className="w-full">
+            <Button type="button" variant="secondary" className="w-full" onClick={() => login('google.user@smartcv.ai', 'demo')}>
               <Mail size={17} />
               Continue with Google
             </Button>
@@ -65,22 +88,22 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
             <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {!isLogin && (
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Full name</span>
-                <input className="input-base mt-2" placeholder="Sophia Bennett" />
+                <input className="input-base mt-2" placeholder="Sophia Bennett" value={name} onChange={(event) => setName(event.target.value)} />
               </label>
             )}
             <label className="block">
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Email</span>
-              <input className="input-base mt-2" placeholder="you@email.com" type="email" />
+              <input className="input-base mt-2" placeholder="you@email.com" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
             <label className="block">
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Password</span>
-              <input className="input-base mt-2" placeholder="••••••••" type="password" />
+              <input className="input-base mt-2" placeholder="••••••••" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
             </label>
-            <Button className="w-full" type="button">
+            <Button className="w-full" type="submit">
               {isLogin ? 'Log in' : 'Create account'}
               <ArrowRight size={17} />
             </Button>
