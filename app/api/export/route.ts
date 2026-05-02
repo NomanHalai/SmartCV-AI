@@ -219,10 +219,11 @@ export async function POST(req: NextRequest) {
     if (format === 'docx') {
       const doc = buildDocx(resume)
       const buffer = await Packer.toBuffer(doc)
+      const body = new Uint8Array(buffer)
       const name = `${resume.personal.firstName}_${resume.personal.lastName}_Resume.docx`
         .replace(/\s+/g, '_')
 
-      return new NextResponse(buffer, {
+      return new NextResponse(body, {
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'Content-Disposition': `attachment; filename="${name}"`,
