@@ -38,7 +38,7 @@ const fadeUp = {
 export default function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden">
-      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 px-4 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70">
+      <header className="sticky top-0 z-50 border-b border-border bg-card/90 px-4 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between">
           <BrandLogo />
           <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-600 lg:flex dark:text-slate-300">
@@ -56,17 +56,17 @@ export default function HomePage() {
       </header>
 
       <section className="relative px-4 pb-20 pt-14 md:pt-20">
-        <div className="absolute inset-x-0 top-0 -z-10 h-[640px] bg-[linear-gradient(115deg,rgba(79,70,229,0.10),transparent_38%,rgba(147,51,234,0.12))]" />
+        <div className="absolute inset-x-0 top-0 -z-10 h-[640px] bg-[linear-gradient(115deg,rgba(79,70,229,0.10),transparent_38%,rgba(147,51,234,0.12))] dark:bg-[linear-gradient(115deg,rgba(2,6,23,1),rgba(15,23,42,0.98)_42%,rgba(46,16,101,0.88))]" />
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.55 }}>
             <Badge className="mb-6">
               <Sparkles size={14} />
               AI-powered resume builder
             </Badge>
-            <h1 className="max-w-3xl text-5xl font-bold tracking-tight text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
+            <h1 className="max-w-3xl text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               Build Smarter Resumes <span className="gradient-text">with AI</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground dark:text-slate-300">
               Create professional, ATS-friendly resumes in minutes with SmartCV AI. Write stronger content, choose premium templates, and apply with confidence.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -76,7 +76,7 @@ export default function HomePage() {
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-4">
               {stats.map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-2xl font-bold text-slate-950 dark:text-white">{stat.value}</p>
+                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
                   <p className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
                 </div>
               ))}

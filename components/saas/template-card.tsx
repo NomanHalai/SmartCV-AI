@@ -4,7 +4,7 @@ import { templates } from './product-data'
 
 export function TemplateCard({ template }: { template: (typeof templates)[number] }) {
   return (
-    <div className="group min-w-[260px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-white/10 dark:bg-white/10">
+    <div className="group w-[min(260px,78vw)] shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-white/10 dark:bg-white/10">
       <div className="p-4">
         <div className="aspect-[4/5] overflow-hidden rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/50">
           <div className={`h-3 w-24 rounded-full bg-gradient-to-r ${template.accent}`} />

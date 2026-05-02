@@ -44,27 +44,27 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-    <main className="min-h-screen bg-background">
-      <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
-        <aside className="hidden border-r border-border bg-card/90 p-5 backdrop-blur-xl lg:block">
+    <main className="min-h-screen overflow-x-hidden bg-background">
+      <div className="grid min-h-screen min-w-0 lg:grid-cols-[240px_minmax(0,1fr)] 2xl:grid-cols-[260px_minmax(0,1fr)]">
+        <aside className="hidden min-w-0 overflow-hidden border-r border-border bg-card/90 p-4 backdrop-blur-xl lg:block 2xl:p-5">
           <BrandLogo />
-          <Button href="/builder" className="mt-8 w-full">
+          <Button href="/builder" className="mt-8 w-full px-3">
             <Plus size={16} />
-            Create New Resume
+            <span className="truncate">Create New Resume</span>
           </Button>
           <nav className="mt-6 space-y-2">
             {nav.map(({ label, icon: Icon, href, active }) => (
               <a
                 key={label}
                 href={href}
-                className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
+                className={`flex min-w-0 items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition-colors ${
                   active
                     ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/20 dark:text-indigo-200'
                     : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10'
                 }`}
               >
-                <Icon size={17} />
-                {label}
+                <Icon size={17} className="shrink-0" />
+                <span className="truncate">{label}</span>
               </a>
             ))}
           </nav>
@@ -73,45 +73,45 @@ export default function DashboardPage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
                 <WandSparkles size={18} />
               </div>
-              <div>
-                <p className="text-sm font-bold text-slate-950 dark:text-white">Go Pro</p>
-                <p className="text-xs text-slate-500">Unlock premium AI tools</p>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold text-slate-950 dark:text-white">Go Pro</p>
+                <p className="truncate text-xs text-slate-500">Unlock premium AI tools</p>
               </div>
             </div>
             <Button href="/pricing" size="sm" className="mt-4 w-full">Upgrade</Button>
           </Card>
         </aside>
 
-        <section className="min-w-0">
+        <section className="min-w-0 overflow-x-hidden">
           <header className="sticky top-0 z-40 border-b border-border bg-card/80 px-4 py-4 backdrop-blur-xl">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center justify-between gap-3">
               <div className="flex items-center gap-3 lg:hidden">
                 <Button variant="secondary" size="icon" aria-label="Open navigation"><Menu size={18} /></Button>
                 <BrandLogo compact />
               </div>
               <div className="hidden min-w-0 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground lg:flex">
-                <Search size={16} />
-                Search resumes, templates, keywords...
+                <Search size={16} className="shrink-0" />
+                <span className="truncate">Search resumes, templates, keywords...</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Button variant="secondary" className="hidden md:inline-flex"><UploadCloud size={16} /> Import resume</Button>
+              <div className="flex shrink-0 items-center gap-2">
+                <Button variant="secondary" className="hidden px-3 xl:inline-flex"><UploadCloud size={16} /> Import</Button>
                 <ThemeToggle />
                 <Button variant="secondary" size="icon" aria-label="Notifications"><Bell size={18} /></Button>
-                <div className="hidden items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2 md:flex">
+                <div className="hidden max-w-[170px] items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2 xl:flex">
                   <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-200">
                     <UserRound size={16} />
                   </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-950 dark:text-white">{user?.name || 'SmartCV User'}</p>
-                    <p className="text-[11px] text-muted-foreground">{user?.email || 'user@email.com'}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-bold text-slate-950 dark:text-white">{user?.name || 'SmartCV User'}</p>
+                    <p className="truncate text-[11px] text-muted-foreground">{user?.email || 'user@email.com'}</p>
                   </div>
                 </div>
-                <Button type="button" variant="ghost" onClick={logout} className="hidden lg:inline-flex">Log out</Button>
+                <Button type="button" variant="ghost" onClick={logout} className="hidden px-3 2xl:inline-flex">Log out</Button>
               </div>
             </div>
           </header>
 
-          <div className="mx-auto max-w-7xl px-4 py-8">
+          <div className="mx-auto w-full max-w-[1180px] px-4 py-8 2xl:max-w-7xl">
             <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
               <div>
                 <Badge>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
               <Button href="/builder">Create resume <Plus size={16} /></Button>
             </div>
 
-            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-8 grid min-w-0 gap-5 md:grid-cols-2 2xl:grid-cols-4">
               {dashboardMetrics.map(({ label, value, change, icon: Icon }, index) => (
                 <motion.div key={label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
                   <Card className="p-5">
@@ -143,8 +143,8 @@ export default function DashboardPage() {
               ))}
             </div>
 
-            <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_380px]">
-              <div className="space-y-6">
+            <div className="mt-6 grid min-w-0 gap-6 2xl:grid-cols-[minmax(0,1fr)_340px]">
+              <div className="min-w-0 space-y-6">
                 <Card className="p-6">
                   <div className="flex items-center justify-between gap-4">
                     <div>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
                     </div>
                     <Button href="/templates" variant="secondary" size="sm">Browse</Button>
                   </div>
-                  <div className="mt-5 flex gap-4 overflow-x-auto pb-3">
+                  <div className="mt-5 flex max-w-full gap-4 overflow-x-auto pb-3">
                     {templates.slice(0, 4).map((template) => (
                       <TemplateCard key={template.name} template={template} />
                     ))}
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <aside className="space-y-6">
+              <aside className="min-w-0 space-y-6">
                 <Card className="p-6 text-center">
                   <h2 className="text-left font-bold text-slate-950 dark:text-white">ATS score widget</h2>
                   <ScoreRing score={92} className="mx-auto my-4" />

@@ -6,13 +6,19 @@ export function BrandLogo({ compact = false, className }: { compact?: boolean; c
   return (
     <Link href="/" className={cn('inline-flex items-center gap-3 focus-ring rounded-2xl', className)}>
       <Image
-        src={compact ? '/brand/smartcv-ai-mark.svg' : '/brand/smartcv-ai-logo.svg'}
+        src="/brand/smartcv-ai-mark.svg"
         alt="SmartCV AI"
-        width={compact ? 40 : 182}
+        width={40}
         height={40}
         priority
-        className={compact ? 'h-10 w-10' : 'h-10 w-auto'}
+        className="h-10 w-10"
       />
+      {!compact && (
+        <span className="text-xl font-extrabold tracking-tight leading-none">
+          <span className="text-slate-950 dark:text-white">SmartCV</span>
+          <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-300 dark:to-violet-300"> AI</span>
+        </span>
+      )}
     </Link>
   )
 }
