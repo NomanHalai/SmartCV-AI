@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuthSession } from '@/lib/auth/require-session'
 import {
   Document,
   Paragraph,
@@ -10,6 +11,8 @@ import {
   ShadingType,
 } from 'docx'
 import type { ResumeData } from '@/types'
+
+export const runtime = 'nodejs'
 
 function buildDocx(resume: ResumeData): Document {
   const { personal, summary, experiences, educations, skills, projects, certifications } = resume
@@ -207,6 +210,7 @@ function buildDocx(resume: ResumeData): Document {
 
 export async function POST(req: NextRequest) {
   try {
+    await requireAuthSession()
     const { resume, format } = await req.json() as {
       resume: ResumeData
       format: 'docx' | 'pdf'

@@ -80,11 +80,29 @@ smartcv-ai/
 
 ## Auth And Theme Notes
 
-- The app now includes a client-side auth session layer for login/register/logout flows.
-- Protected screens redirect unauthenticated users to `/auth/login`.
-- Current auth storage is local browser storage, intended as a working UI/demo auth layer.
-- For production accounts, replace the local auth provider with a real provider such as Supabase Auth, Clerk, Auth.js, or Netlify-compatible external auth.
+- Authentication uses Firebase Authentication with email/password and Google OAuth.
+- The client exchanges Firebase ID tokens for secure HTTP-only session cookies through `/api/auth/session`.
+- Protected screens redirect unauthenticated users to `/auth/login` through `middleware.ts`.
+- Protected API routes verify the Firebase session cookie with Firebase Admin SDK.
+- User profiles are stored in Firestore under `users/{uid}` when a session is created.
 - Light/dark mode is handled by a shared theme provider and persisted in local storage.
+
+Required Netlify environment variables:
+
+```bash
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+ANTHROPIC_API_KEY=
+```
+
+`FIREBASE_PRIVATE_KEY` can be stored with escaped newlines. The server code converts `\\n` to real newlines.
 
 ## Run Locally
 

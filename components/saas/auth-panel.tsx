@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { ArrowRight, CheckCircle2, Github, Mail, ShieldCheck, Sparkles } from 'lucide-react'
+import { AlertCircle, ArrowRight, CheckCircle2, Chrome, Loader2, ShieldCheck, Sparkles } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -11,13 +11,14 @@ import { useAuth } from './auth-provider'
 
 export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
   const isLogin = mode === 'login'
-  const { login, register } = useAuth()
+  const { login, register, loginWithGoogle, isLoading, error, clearError } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    clearError()
     if (!email || !password) return
 
     if (isLogin) {
@@ -67,17 +68,13 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
             {isLogin ? 'Log in to SmartCV AI' : 'Start building better resumes'}
           </h1>
-          <p className="mt-2 text-sm leading-6 text-slate-500">
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
             {isLogin ? 'Continue optimizing your resumes and applications.' : 'Create your account and build your first ATS-ready resume.'}
           </p>
 
           <div className="mt-8 space-y-3">
-            <Button type="button" variant="secondary" className="w-full" onClick={() => login('github.user@smartcv.ai', 'demo')}>
-              <Github size={17} />
-              Continue with GitHub
-            </Button>
-            <Button type="button" variant="secondary" className="w-full" onClick={() => login('google.user@smartcv.ai', 'demo')}>
-              <Mail size={17} />
+            <Button type="button" variant="secondary" className="w-full" onClick={loginWithGoogle} disabled={isLoading}>
+              <Chrome size={17} />
               Continue with Google
             </Button>
           </div>
@@ -92,7 +89,7 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
             {!isLogin && (
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Full name</span>
-                <input className="input-base mt-2" placeholder="Sophia Bennett" value={name} onChange={(event) => setName(event.target.value)} />
+                <input className="input-base mt-2" placeholder="Sophia Bennett" value={name} onChange={(event) => setName(event.target.value)} required />
               </label>
             )}
             <label className="block">
@@ -103,9 +100,24 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Password</span>
               <input className="input-base mt-2" placeholder="••••••••" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
             </label>
-            <Button className="w-full" type="submit">
-              {isLogin ? 'Log in' : 'Create account'}
-              <ArrowRight size={17} />
+            {error && (
+              <div className="flex items-start gap-2 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-200">
+                <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 size={17} className="animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                <>
+                  {isLogin ? 'Log in' : 'Create account'}
+                  <ArrowRight size={17} />
+                </>
+              )}
             </Button>
           </form>
 

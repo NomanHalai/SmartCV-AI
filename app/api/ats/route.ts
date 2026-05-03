@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { scoreResume, scoreResumeHealth } from '@/lib/ats-engine/scorer'
+import { requireAuthSession } from '@/lib/auth/require-session'
 import type { ResumeData } from '@/types'
+
+export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   try {
+    await requireAuthSession()
     const body = await req.json()
     const { resume, jobDescription } = body as {
       resume: ResumeData

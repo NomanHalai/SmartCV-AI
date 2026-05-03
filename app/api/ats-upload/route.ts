@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuthSession } from '@/lib/auth/require-session'
 import { scoreResumeHealth } from '@/lib/ats-engine/scorer'
 import type { ResumeData } from '@/types'
+
+export const runtime = 'nodejs'
 
 const COMMON_SKILLS = [
   'react',
@@ -121,6 +124,7 @@ function toResumeData(rawText: string): ResumeData {
 
 export async function POST(req: NextRequest) {
   try {
+    await requireAuthSession()
     const formData = await req.formData()
     const file = formData.get('file') as File | null
 

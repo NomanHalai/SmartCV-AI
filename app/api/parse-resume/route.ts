@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { requireAuthSession } from '@/lib/auth/require-session'
 
 const client = new Anthropic()
+export const runtime = 'nodejs'
 
 // ─── PDF text extraction ───────────────────────────────────────────────────
 async function extractPdfText(buffer: Buffer): Promise<string> {
@@ -123,6 +125,7 @@ Return this EXACT JSON structure (fill in all values from the resume):
 // ─── Route handler ─────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
+    await requireAuthSession()
     const formData = await req.formData()
     const file = formData.get('file') as File | null
 

@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { requireAuthSession } from '@/lib/auth/require-session'
 
 const client = new Anthropic()
+export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   try {
+    await requireAuthSession()
     const { bullet, jobTitle, company, action } = await req.json() as {
       bullet: string
       jobTitle?: string
