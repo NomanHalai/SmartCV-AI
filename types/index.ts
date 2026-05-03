@@ -59,9 +59,16 @@ export interface ResumeData {
   projects: Project[]
   certifications: Certification[]
   template: TemplateId
+  theme: ResumeTheme
 }
 
 export type TemplateId = 'clean' | 'modern' | 'executive' | 'technical' | 'minimal'
+
+export interface ResumeTheme {
+  accentColor: 'indigo' | 'blue' | 'emerald' | 'slate' | 'violet'
+  font: 'inter' | 'serif'
+  density: 'compact' | 'comfortable'
+}
 
 // ─── ATS Types ────────────────────────────────────────────────────────────────
 

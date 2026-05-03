@@ -10,6 +10,7 @@ import type {
   BuilderStep,
   ATSResult,
   TemplateId,
+  ResumeTheme,
 } from '@/types'
 
 // ─── Default empty state ──────────────────────────────────────────────────────
@@ -35,6 +36,11 @@ const defaultResumeData: ResumeData = {
   projects: [],
   certifications: [],
   template: 'clean',
+  theme: {
+    accentColor: 'indigo',
+    font: 'inter',
+    density: 'comfortable',
+  },
 }
 
 // ─── Store Interface ──────────────────────────────────────────────────────────
@@ -80,6 +86,7 @@ interface ResumeStore {
 
   // Template
   setTemplate: (template: TemplateId) => void
+  setTheme: (theme: Partial<ResumeTheme>) => void
 
   // Navigation
   setActiveStep: (step: BuilderStep) => void
@@ -199,6 +206,9 @@ export const useResumeStore = create<ResumeStore>()(
 
       setTemplate: (template) =>
         set((s) => ({ resume: { ...s.resume, template } })),
+
+      setTheme: (theme) =>
+        set((s) => ({ resume: { ...s.resume, theme: { ...s.resume.theme, ...theme } } })),
 
       setActiveStep: (step) => set({ activeStep: step }),
       setJobDescription: (jobDescription) => set({ jobDescription }),

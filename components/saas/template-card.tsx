@@ -1,10 +1,17 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { templates } from './product-data'
+import { useResumeStore } from '@/store/resumeStore'
+import type { TemplateId } from '@/types'
 
 export function TemplateCard({ template }: { template: (typeof templates)[number] }) {
+  const selected = useResumeStore((state) => state.resume.template === template.id)
+  const setTemplate = useResumeStore((state) => state.setTemplate)
+
   return (
-    <div className="group w-[min(260px,78vw)] shrink-0 overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
+    <div className={`group w-[min(260px,78vw)] shrink-0 overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-soft ${selected ? 'border-indigo-400 ring-2 ring-indigo-500/20' : 'border-border'}`}>
       <div className="p-4">
         <div className="aspect-[4/5] overflow-hidden rounded-xl border border-border bg-muted p-4">
           <div className={`h-3 w-24 rounded-full bg-gradient-to-r ${template.accent}`} />
@@ -37,7 +44,14 @@ export function TemplateCard({ template }: { template: (typeof templates)[number
         </div>
         <div className="mt-4 flex items-center justify-between gap-3">
           <span className="text-xs font-medium text-slate-500">{template.layout}</span>
-          <Button href="/builder" variant="secondary" size="sm">Use</Button>
+          <Button
+            href="/builder"
+            variant={selected ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setTemplate(template.id as TemplateId)}
+          >
+            {selected ? 'Selected' : 'Use'}
+          </Button>
         </div>
       </div>
     </div>

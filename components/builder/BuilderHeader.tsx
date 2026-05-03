@@ -75,6 +75,11 @@ export function BuilderHeader() {
             Export DOCX
           </button>
 
+          <Link href="/print" className="btn-secondary hidden text-xs sm:inline-flex">
+            <Download size={13} />
+            PDF
+          </Link>
+
           <button
             onClick={() => { if (confirm('Reset your resume? This cannot be undone.')) resetResume() }}
             className="btn-ghost hidden text-xs text-slate-400 sm:inline-flex"

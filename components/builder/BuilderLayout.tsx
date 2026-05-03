@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { builderSteps } from '@/components/saas/product-data'
 import { CheckCircle2, Palette, Sparkles, WandSparkles } from 'lucide-react'
+import type { TemplateId, ResumeTheme } from '@/types'
 
 const SECTIONS: Record<BuilderStep, React.ComponentType> = {
   personal: PersonalForm,
@@ -29,8 +30,22 @@ const SECTIONS: Record<BuilderStep, React.ComponentType> = {
 }
 
 export function BuilderLayout() {
-  const activeStep = useResumeStore((s) => s.activeStep)
+  const { activeStep, resume, setTemplate, setTheme } = useResumeStore()
   const ActiveSection = SECTIONS[activeStep]
+  const templateOptions: { id: TemplateId; label: string }[] = [
+    { id: 'clean', label: 'Clean' },
+    { id: 'modern', label: 'Modern' },
+    { id: 'executive', label: 'Executive' },
+    { id: 'technical', label: 'Technical' },
+    { id: 'minimal', label: 'Minimal' },
+  ]
+  const accentOptions: { id: ResumeTheme['accentColor']; className: string }[] = [
+    { id: 'indigo', className: 'bg-indigo-600' },
+    { id: 'blue', className: 'bg-blue-600' },
+    { id: 'emerald', className: 'bg-emerald-600' },
+    { id: 'slate', className: 'bg-slate-900' },
+    { id: 'violet', className: 'bg-violet-600' },
+  ]
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden">
@@ -68,14 +83,52 @@ export function BuilderLayout() {
               </Card>
               <Card className="p-5">
                 <Badge variant="neutral"><Palette size={13} /> Theme customization</Badge>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Template</p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {templateOptions.map((template) => (
+                    <button
+                      key={template.id}
+                      type="button"
+                      onClick={() => setTemplate(template.id)}
+                      className={`rounded-xl border px-3 py-2 text-xs font-semibold transition-colors ${
+                        resume.template === template.id
+                          ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-400/30 dark:bg-indigo-400/10 dark:text-indigo-200'
+                          : 'border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                    >
+                      {template.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accent</p>
                 <div className="mt-4 grid grid-cols-4 gap-2">
-                  {['bg-indigo-600', 'bg-sky-500', 'bg-emerald-500', 'bg-slate-900'].map((color) => (
-                    <button key={color} aria-label="Choose theme color" className={`h-9 rounded-2xl ${color}`} />
+                  {accentOptions.map((color) => (
+                    <button
+                      key={color.id}
+                      type="button"
+                      onClick={() => setTheme({ accentColor: color.id })}
+                      aria-label={`Choose ${color.id} theme color`}
+                      className={`h-9 rounded-2xl ${color.className} ${resume.theme?.accentColor === color.id ? 'ring-2 ring-offset-2 ring-indigo-500 ring-offset-background' : ''}`}
+                    />
                   ))}
                 </div>
                 <div className="mt-4 grid grid-cols-2 gap-2">
-                  <Button variant="secondary" size="sm">Modern</Button>
-                  <Button variant="secondary" size="sm">Compact</Button>
+                  <Button
+                    type="button"
+                    variant={resume.theme?.font === 'serif' ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => setTheme({ font: resume.theme?.font === 'serif' ? 'inter' : 'serif' })}
+                  >
+                    {resume.theme?.font === 'serif' ? 'Serif' : 'Inter'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={resume.theme?.density === 'compact' ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => setTheme({ density: resume.theme?.density === 'compact' ? 'comfortable' : 'compact' })}
+                  >
+                    {resume.theme?.density === 'compact' ? 'Compact' : 'Comfort'}
+                  </Button>
                 </div>
               </Card>
             </aside>

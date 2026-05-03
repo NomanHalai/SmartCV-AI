@@ -67,6 +67,7 @@ export const stats = [
 
 export const templates = [
   {
+    id: 'executive',
     name: 'Executive Slate',
     role: 'Leadership and operations',
     score: 96,
@@ -74,6 +75,7 @@ export const templates = [
     layout: 'Classic two-column',
   },
   {
+    id: 'modern',
     name: 'Product Clarity',
     role: 'Product managers',
     score: 94,
@@ -81,6 +83,7 @@ export const templates = [
     layout: 'Impact-first',
   },
   {
+    id: 'technical',
     name: 'Engineering Signal',
     role: 'Software engineers',
     score: 98,
@@ -88,6 +91,7 @@ export const templates = [
     layout: 'Project-rich',
   },
   {
+    id: 'clean',
     name: 'Creative Systems',
     role: 'Design and marketing',
     score: 92,
@@ -95,6 +99,7 @@ export const templates = [
     layout: 'Portfolio-led',
   },
   {
+    id: 'minimal',
     name: 'Consulting Edge',
     role: 'Consultants and analysts',
     score: 95,
@@ -102,6 +107,7 @@ export const templates = [
     layout: 'Case-study style',
   },
   {
+    id: 'clean',
     name: 'Graduate Launch',
     role: 'Students and early career',
     score: 91,

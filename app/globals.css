@@ -132,11 +132,15 @@
 /* Resume preview print styles */
 @media print {
   .no-print { display: none !important; }
+  body {
+    background: white !important;
+  }
   .resume-paper {
     margin: 0 !important;
-    padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
   }
 }
 
