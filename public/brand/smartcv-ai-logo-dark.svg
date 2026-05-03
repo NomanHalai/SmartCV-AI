@@ -1,0 +1,35 @@
+<svg width="196" height="48" viewBox="0 0 196 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SmartCV AI dark logo</title>
+  <desc id="desc">SmartCV AI wordmark optimized for dark backgrounds.</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="8" y1="6" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="0.52" stop-color="#6D5DFF"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="151" y1="13" x2="187" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A5B4FC"/>
+      <stop offset="1" stop-color="#C084FC"/>
+    </linearGradient>
+    <filter id="markShadow" x="2" y="3" width="44" height="43" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="4"/>
+      <feGaussianBlur stdDeviation="5"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.384 0 0 0 0 0.357 0 0 0 0 1 0 0 0 0.34 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="#F8FAFC"/>
+  <g filter="url(#markShadow)">
+    <path d="M24.007 7.5 39 16.25v15.5L24.007 40.5 9 31.75v-15.5L24.007 7.5Z" fill="url(#markGradient)"/>
+    <path d="M24.007 12.25 34.892 18.6v3.705L24.007 15.94 13.108 22.305V18.6l10.899-6.35Z" fill="white" fill-opacity=".92"/>
+    <path d="m13.108 25.695 10.9 6.364 10.884-6.364V29.4L24.007 35.75 13.108 29.4v-3.705Z" fill="white" fill-opacity=".9"/>
+    <path d="m24.007 19.398 10.885 6.35-10.885 6.35-10.899-6.35 10.899-6.35Zm0 3.704-4.548 2.646 4.548 2.646 4.534-2.646-4.534-2.646Z" fill="white"/>
+  </g>
+  <path d="M15.25 10.25 16.35 13l2.9 1.1-2.9 1.1-1.1 2.8-1.1-2.8-2.9-1.1 2.9-1.1 1.1-2.75Z" fill="#6366F1"/>
+  <path d="M35.25 8.75 35.9 10.35l1.6.65-1.6.65-.65 1.6-.65-1.6-1.6-.65 1.6-.65.65-1.6Z" fill="#8B5CF6"/>
+  <text x="58" y="32" fill="#FFFFFF" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="800" letter-spacing="0">SmartCV</text>
+  <text x="158" y="32" fill="url(#textGradient)" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="800" letter-spacing="0">AI</text>
+</svg>

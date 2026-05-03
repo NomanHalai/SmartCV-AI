@@ -39,7 +39,7 @@ export function BuilderSidebar() {
   return (
     <nav className="hidden w-64 min-w-64 border-r border-border bg-card/90 flex-col py-5 backdrop-blur-xl lg:flex overflow-y-auto">
       <div className="px-3 mb-4">
-        <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Drag sections</div>
+        <div className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-wider">Drag sections</div>
       </div>
 
       <div className="flex-1 px-2 space-y-0.5">
@@ -57,11 +57,11 @@ export function BuilderSidebar() {
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
-              <GripVertical size={14} className="text-slate-300" />
+              <GripVertical size={14} className="text-muted-foreground/60" />
               {done && !active ? (
                 <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0" />
               ) : (
-                <Icon size={15} className={cn('flex-shrink-0', active ? 'text-indigo-600' : 'text-slate-400')} />
+                <Icon size={15} className={cn('flex-shrink-0', active ? 'text-indigo-600' : 'text-muted-foreground')} />
               )}
               {label}
             </button>
@@ -72,7 +72,7 @@ export function BuilderSidebar() {
       {/* Progress */}
       <div className="px-4 mt-4 pt-4 border-t border-border">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs text-slate-400">Profile complete</span>
+          <span className="text-xs text-muted-foreground">Profile complete</span>
           <span className="text-xs font-semibold text-indigo-600">{pct}%</span>
         </div>
         <Progress value={pct} />

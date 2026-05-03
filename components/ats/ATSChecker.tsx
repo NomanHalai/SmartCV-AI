@@ -26,7 +26,7 @@ function ScoreRing({ score }: { score: number }) {
   return (
     <div className="flex flex-col items-center">
       <svg width="112" height="112" viewBox="0 0 112 112">
-        <circle cx="56" cy="56" r={r} fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-100 dark:text-white/10" />
+        <circle cx="56" cy="56" r={r} fill="none" stroke="currentColor" strokeWidth="8" className="text-muted" />
         <circle
           cx="56"
           cy="56"

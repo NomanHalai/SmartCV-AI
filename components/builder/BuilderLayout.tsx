@@ -55,11 +55,11 @@ export function BuilderLayout() {
             <aside className="hidden space-y-5 xl:block">
               <Card className="p-5">
                 <Badge><Sparkles size={13} /> AI content suggestions</Badge>
-                <h3 className="mt-4 font-bold text-slate-950">Enhance experience</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">Rewrite bullets with stronger action verbs, scope, metrics, and recruiter-friendly outcomes.</p>
+                <h3 className="mt-4 font-bold text-foreground">Enhance experience</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">Rewrite bullets with stronger action verbs, scope, metrics, and recruiter-friendly outcomes.</p>
                 <div className="mt-4 space-y-2">
                   {['Add measurable impact', 'Tighten summary', 'Suggest role keywords'].map((item) => (
-                    <button key={item} className="flex w-full items-center gap-2 rounded-2xl bg-indigo-50 p-3 text-left text-xs font-semibold text-indigo-700">
+                    <button key={item} className="flex w-full items-center gap-2 rounded-2xl bg-indigo-50 p-3 text-left text-xs font-semibold text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-200">
                       <WandSparkles size={14} />
                       {item}
                     </button>

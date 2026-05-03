@@ -115,18 +115,18 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors z-10"
+          className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors z-10"
         >
-          <X size={14} className="text-slate-500" />
+          <X size={14} className="text-muted-foreground" />
         </button>
       )}
 
       <div className="mb-4">
-        <h3 className="text-base font-semibold text-slate-800 flex items-center gap-2">
+        <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Sparkles size={16} className="text-teal-600" />
           Import Existing Resume
         </h3>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Upload your PDF or DOCX — Claude AI will extract all sections automatically
         </p>
       </div>
@@ -147,7 +147,7 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
             ? 'border-red-300 bg-red-50 cursor-pointer'
             : isLoading
             ? 'border-teal-200 bg-teal-50/50 cursor-wait'
-            : 'border-slate-200 bg-slate-50 hover:border-teal-300 hover:bg-teal-50/30'
+            : 'border-border bg-muted hover:border-teal-300 hover:bg-teal-50/30 dark:hover:bg-teal-400/10'
         )}
       >
         <input
@@ -160,17 +160,17 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
 
         {stage === 'idle' && (
           <>
-            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center mx-auto mb-3 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center mx-auto mb-3 shadow-sm">
               <Upload size={22} className="text-teal-600" />
             </div>
-            <p className="text-sm font-medium text-slate-700 mb-1">
+            <p className="text-sm font-medium text-foreground mb-1">
               Drop your resume here
             </p>
-            <p className="text-xs text-slate-400 mb-3">or click to browse</p>
+            <p className="text-xs text-muted-foreground mb-3">or click to browse</p>
             <div className="flex items-center justify-center gap-2">
-              <span className="badge bg-slate-100 text-slate-500 border-slate-200">PDF</span>
-              <span className="badge bg-slate-100 text-slate-500 border-slate-200">DOCX</span>
-              <span className="badge bg-slate-100 text-slate-500 border-slate-200">DOC</span>
+              <span className="badge bg-card text-muted-foreground border-border">PDF</span>
+              <span className="badge bg-card text-muted-foreground border-border">DOCX</span>
+              <span className="badge bg-card text-muted-foreground border-border">DOC</span>
             </div>
           </>
         )}
@@ -180,14 +180,14 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
             <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mx-auto mb-3">
               <Loader2 size={22} className="text-teal-600 animate-spin" />
             </div>
-            <p className="text-sm font-medium text-slate-700 mb-1">{STAGES[stage]}</p>
-            {fileName && <p className="text-xs text-slate-400">{fileName}</p>}
+            <p className="text-sm font-medium text-foreground mb-1">{STAGES[stage]}</p>
+            {fileName && <p className="text-xs text-muted-foreground">{fileName}</p>}
             {stage === 'parsing' && (
               <div className="mt-3 space-y-1.5 text-left max-w-xs mx-auto">
                 {['Detecting sections...', 'Extracting experience...', 'Parsing skills & education...'].map((step, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" style={{ animationDelay: `${i * 200}ms` }} />
-                    <span className="text-xs text-slate-500">{step}</span>
+                    <span className="text-xs text-muted-foreground">{step}</span>
                   </div>
                 ))}
               </div>
@@ -201,10 +201,10 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
               <CheckCircle2 size={22} className="text-emerald-600" />
             </div>
             <p className="text-sm font-semibold text-emerald-700 mb-1">Successfully imported!</p>
-            {preview.name && <p className="text-xs font-medium text-slate-600">{preview.name}</p>}
-            {preview.title && <p className="text-xs text-slate-400">{preview.title}</p>}
-            {preview.email && <p className="text-xs text-slate-400">{preview.email}</p>}
-            <p className="text-xs text-slate-400 mt-2">Redirecting to editor...</p>
+            {preview.name && <p className="text-xs font-medium text-foreground">{preview.name}</p>}
+            {preview.title && <p className="text-xs text-muted-foreground">{preview.title}</p>}
+            {preview.email && <p className="text-xs text-muted-foreground">{preview.email}</p>}
+            <p className="text-xs text-muted-foreground mt-2">Redirecting to editor...</p>
           </>
         )}
 
@@ -215,14 +215,14 @@ export function UploadResume({ onClose, onSuccess }: UploadResumeProps) {
             </div>
             <p className="text-sm font-semibold text-red-600 mb-1">Upload failed</p>
             <p className="text-xs text-red-400 mb-3 max-w-xs mx-auto">{error}</p>
-            <p className="text-xs text-slate-400">Click to try again</p>
+            <p className="text-xs text-muted-foreground">Click to try again</p>
           </>
         )}
       </div>
 
       {/* Tips */}
       {stage === 'idle' && (
-        <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+        <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg dark:border-blue-400/20 dark:bg-blue-400/10">
           <p className="text-xs font-medium text-blue-700 mb-1">For best results:</p>
           <ul className="text-xs text-blue-600 space-y-0.5">
             <li>• Use a text-based PDF (not scanned image)</li>

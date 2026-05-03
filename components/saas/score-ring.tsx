@@ -16,7 +16,7 @@ export function ScoreRing({
   return (
     <div className={cn('relative inline-flex items-center justify-center', className)} style={{ width: size, height: size }}>
       <svg viewBox="0 0 112 112" className="h-full w-full">
-        <circle cx="56" cy="56" r={radius} fill="none" stroke="currentColor" strokeWidth="10" className="text-slate-100 dark:text-white/10" />
+        <circle cx="56" cy="56" r={radius} fill="none" stroke="currentColor" strokeWidth="10" className="text-muted" />
         <circle
           cx="56"
           cy="56"
@@ -39,7 +39,7 @@ export function ScoreRing({
         </defs>
       </svg>
       <div className="absolute text-center">
-        <div className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">{score}</div>
+        <div className="text-3xl font-bold tracking-tight text-foreground">{score}</div>
         <div className="text-[11px] font-semibold text-emerald-600">Excellent</div>
       </div>
     </div>

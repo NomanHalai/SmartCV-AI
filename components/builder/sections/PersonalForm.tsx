@@ -15,7 +15,7 @@ export function PersonalForm() {
     type = 'text'
   ) => (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">{label}</label>
+      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</label>
       <input
         type={type}
         value={p[key]}

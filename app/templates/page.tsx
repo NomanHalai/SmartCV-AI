@@ -28,16 +28,16 @@ export default function TemplatesPage() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <Badge><LayoutGrid size={14} /> Templates Gallery</Badge>
-            <h1 className="mt-5 text-4xl font-bold tracking-tight text-slate-950 md:text-6xl dark:text-white">
+            <h1 className="mt-5 text-4xl font-bold tracking-tight text-foreground md:text-6xl">
               Premium resume templates for every career story
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300">
+            <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
               Choose a recruiter-friendly layout, tune the theme, and keep ATS parsing clean while your resume looks distinctly polished.
             </p>
           </div>
           <Card className="p-4">
             <div className="flex flex-col gap-3 md:flex-row">
-              <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-500 dark:border-white/10 dark:bg-white/5">
+              <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
                 <Search size={16} />
                 Search by role, style, or industry
               </div>
@@ -50,7 +50,7 @@ export default function TemplatesPage() {
                   className={`rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
                     index === 0
                       ? 'border-indigo-200 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
+                      : 'border-border bg-card text-muted-foreground hover:border-indigo-200 hover:text-indigo-600'
                   }`}
                 >
                   {category}
@@ -71,8 +71,8 @@ export default function TemplatesPage() {
         <Card className="mt-10 grid gap-6 overflow-hidden p-6 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <Badge variant="success"><Sparkles size={14} /> AI template recommendation</Badge>
-            <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">Not sure which template fits?</h2>
-            <p className="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
+            <h2 className="mt-4 text-2xl font-bold tracking-tight text-foreground">Not sure which template fits?</h2>
+            <p className="mt-2 text-sm leading-7 text-muted-foreground">
               SmartCV AI can recommend a format based on seniority, target role, industry, and content density.
             </p>
           </div>

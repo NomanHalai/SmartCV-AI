@@ -41,6 +41,7 @@
   body {
     min-height: 100vh;
     overflow-x: hidden;
+    color: hsl(var(--foreground));
     background:
       radial-gradient(circle at top left, rgba(79, 70, 229, 0.12), transparent 32rem),
       radial-gradient(circle at top right, rgba(147, 51, 234, 0.10), transparent 30rem),

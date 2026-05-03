@@ -47,7 +47,7 @@ Education: ${resume.educations.map(e => `${e.degree} from ${e.institution}`).joi
       <SectionHeader icon={AlignLeft} title="Professional Summary" description="A 2–4 sentence pitch about your career and value" />
       <div className="card p-5 mb-4">
         <div className="flex justify-between items-center mb-2">
-          <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Summary</label>
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Summary</label>
           <button onClick={generateWithAI} disabled={generating} className="btn-ghost text-xs text-teal-600 hover:text-teal-700 gap-1">
             {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
             {generating ? 'Generating...' : 'Generate with AI'}
@@ -61,14 +61,14 @@ Education: ${resume.educations.map(e => `${e.degree} from ${e.institution}`).joi
           onChange={(e) => updateSummary(e.target.value)}
         />
         <div className="flex justify-between items-center mt-2">
-          <p className={`text-xs ${isGood ? 'text-emerald-600' : charCount > 0 ? 'text-amber-500' : 'text-slate-400'}`}>
+          <p className={`text-xs ${isGood ? 'text-emerald-600' : charCount > 0 ? 'text-amber-500' : 'text-muted-foreground'}`}>
             {charCount === 0 ? 'Aim for 100–600 characters' : isGood ? `✓ ${charCount} characters — great length` : `${charCount} characters — ${charCount < 100 ? 'too short' : 'consider trimming'}`}
           </p>
         </div>
 
-        <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
-          <p className="text-xs font-medium text-slate-600 mb-1.5">✓ ATS tips for your summary:</p>
-          <ul className="text-xs text-slate-500 space-y-1">
+        <div className="mt-4 p-3 bg-muted rounded-lg border border-border">
+          <p className="text-xs font-medium text-foreground mb-1.5">✓ ATS tips for your summary:</p>
+          <ul className="text-xs text-muted-foreground space-y-1">
             <li>• Include your exact job title from the target role</li>
             <li>• Mention 2–3 of your strongest technical skills</li>
             <li>• Add one quantified achievement or career highlight</li>

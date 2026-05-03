@@ -48,7 +48,7 @@ export function SkillsForm() {
         {resume.skills.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {resume.skills.map((skill) => (
-              <span key={skill} className="flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-full text-xs font-medium">
+              <span key={skill} className="flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-full text-xs font-medium dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-200">
                 {skill}
                 <button onClick={() => removeSkill(skill)} className="hover:text-red-500 transition-colors ml-0.5">
                   <X size={11} />
@@ -58,12 +58,12 @@ export function SkillsForm() {
           </div>
         )}
 
-        <div className="border-t border-slate-100 pt-4">
-          <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3">Quick add suggestions</p>
+        <div className="border-t border-border pt-4">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Quick add suggestions</p>
           <div className="space-y-3">
             {Object.entries(SUGGESTED_SKILLS).map(([category, suggestions]) => (
               <div key={category}>
-                <p className="text-xs text-slate-500 font-medium mb-1.5">{category}</p>
+                <p className="text-xs text-muted-foreground font-medium mb-1.5">{category}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {suggestions.map((s) => {
                     const added = resume.skills.includes(s)
@@ -74,7 +74,7 @@ export function SkillsForm() {
                         className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
                           added
                             ? 'bg-teal-50 text-teal-700 border-teal-300 font-medium'
-                            : 'bg-white text-slate-500 border-slate-200 hover:border-teal-300 hover:text-teal-600'
+                            : 'bg-card text-muted-foreground border-border hover:border-teal-300 hover:text-teal-600'
                         }`}
                       >
                         {added ? '✓ ' : '+ '}{s}

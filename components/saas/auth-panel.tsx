@@ -65,7 +65,7 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
             <BrandLogo />
           </div>
           <Badge variant="neutral">{isLogin ? 'Welcome back' : 'Create workspace'}</Badge>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">
             {isLogin ? 'Log in to SmartCV AI' : 'Start building better resumes'}
           </h1>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -80,9 +80,9 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
           </div>
 
           <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+            <div className="h-px flex-1 bg-border" />
             or
-            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+            <div className="h-px flex-1 bg-border" />
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>

@@ -60,7 +60,7 @@ export default function DashboardPage() {
                 className={`flex min-w-0 items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition-colors ${
                   active
                     ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/20 dark:text-indigo-200'
-                    : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 }`}
               >
                 <Icon size={17} className="shrink-0" />
@@ -74,8 +74,8 @@ export default function DashboardPage() {
                 <WandSparkles size={18} />
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-bold text-slate-950 dark:text-white">Go Pro</p>
-                <p className="truncate text-xs text-slate-500">Unlock premium AI tools</p>
+                <p className="truncate text-sm font-bold text-foreground">Go Pro</p>
+                <p className="truncate text-xs text-muted-foreground">Unlock premium AI tools</p>
               </div>
             </div>
             <Button href="/pricing" size="sm" className="mt-4 w-full">Upgrade</Button>
@@ -102,7 +102,7 @@ export default function DashboardPage() {
                     <UserRound size={16} />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-xs font-bold text-slate-950 dark:text-white">{user?.name || 'SmartCV User'}</p>
+                    <p className="truncate text-xs font-bold text-foreground">{user?.name || 'SmartCV User'}</p>
                     <p className="truncate text-[11px] text-muted-foreground">{user?.email || 'user@email.com'}</p>
                   </div>
                 </div>
@@ -118,8 +118,8 @@ export default function DashboardPage() {
                   <Sparkles size={14} />
                   AI career workspace
                 </Badge>
-                <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 md:text-4xl dark:text-white">Dashboard</h1>
-                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Welcome back, {user?.name?.split(' ')[0] || 'there'}. Your resume pipeline is getting sharper.</p>
+                <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">Dashboard</h1>
+                <p className="mt-2 text-sm text-muted-foreground">Welcome back, {user?.name?.split(' ')[0] || 'there'}. Your resume pipeline is getting sharper.</p>
               </div>
               <Button href="/builder">Create resume <Plus size={16} /></Button>
             </div>
@@ -130,8 +130,8 @@ export default function DashboardPage() {
                   <Card className="p-5">
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm font-medium text-slate-500">{label}</p>
-                        <p className="mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">{value}</p>
+                        <p className="text-sm font-medium text-muted-foreground">{label}</p>
+                        <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{value}</p>
                       </div>
                       <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-400/20 dark:text-indigo-200">
                         <Icon size={20} />
@@ -148,8 +148,8 @@ export default function DashboardPage() {
                 <Card className="p-6">
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <h2 className="font-bold text-slate-950 dark:text-white">Recent resumes</h2>
-                      <p className="mt-1 text-sm text-slate-500">Track score changes and export status.</p>
+                      <h2 className="font-bold text-foreground">Recent resumes</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">Track score changes and export status.</p>
                     </div>
                     <Button href="/builder" variant="secondary" size="sm">View all</Button>
                   </div>
@@ -160,8 +160,8 @@ export default function DashboardPage() {
                           <FileText size={18} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold text-slate-950 dark:text-white">{resume.title}</p>
-                          <p className="text-xs text-slate-500">{resume.updated}</p>
+                          <p className="truncate text-sm font-bold text-foreground">{resume.title}</p>
+                          <p className="text-xs text-muted-foreground">{resume.updated}</p>
                         </div>
                         <Badge variant={resume.score >= 85 ? 'success' : 'warning'}>{resume.score}</Badge>
                         <Button variant="ghost" size="icon" aria-label={`Open actions for ${resume.title}`}><MoreVertical size={17} /></Button>
@@ -173,8 +173,8 @@ export default function DashboardPage() {
                 <Card className="overflow-hidden p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 className="font-bold text-slate-950 dark:text-white">Professional templates</h2>
-                      <p className="mt-1 text-sm text-slate-500">Recently recommended for your target roles.</p>
+                      <h2 className="font-bold text-foreground">Professional templates</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">Recently recommended for your target roles.</p>
                     </div>
                     <Button href="/templates" variant="secondary" size="sm">Browse</Button>
                   </div>
@@ -187,11 +187,11 @@ export default function DashboardPage() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <Card className="p-6">
-                    <h2 className="font-bold text-slate-950 dark:text-white">Export options</h2>
-                    <p className="mt-1 text-sm text-slate-500">Prepare every application format.</p>
+                    <h2 className="font-bold text-foreground">Export options</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">Prepare every application format.</p>
                     <div className="mt-5 grid gap-3">
                       {['PDF for recruiter share', 'DOCX for job portals', 'TXT for ATS parsing'].map((label) => (
-                        <button key={label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 text-left text-sm font-semibold text-slate-700 transition-colors hover:border-indigo-200 hover:bg-indigo-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                        <button key={label} className="flex items-center justify-between rounded-2xl border border-border bg-card p-4 text-left text-sm font-semibold text-foreground transition-colors hover:border-indigo-200 hover:bg-muted">
                           <span className="flex items-center gap-3"><Download size={16} className="text-indigo-600" /> {label}</span>
                           <ChevronRight size={16} />
                         </button>
@@ -200,8 +200,8 @@ export default function DashboardPage() {
                   </Card>
 
                   <Card className="p-6">
-                    <h2 className="font-bold text-slate-950 dark:text-white">Skeleton states</h2>
-                    <p className="mt-1 text-sm text-slate-500">Loading cards match the final layout.</p>
+                    <h2 className="font-bold text-foreground">Skeleton states</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">Loading cards match the final layout.</p>
                     <div className="mt-5 space-y-3">
                       <Skeleton className="h-12" />
                       <Skeleton className="h-20" />
@@ -213,15 +213,15 @@ export default function DashboardPage() {
 
               <aside className="min-w-0 space-y-6">
                 <Card className="p-6 text-center">
-                  <h2 className="text-left font-bold text-slate-950 dark:text-white">ATS score widget</h2>
+                  <h2 className="text-left font-bold text-foreground">ATS score widget</h2>
                   <ScoreRing score={92} className="mx-auto my-4" />
-                  <p className="text-sm text-slate-500">Your strongest resume is ready for product design roles.</p>
+                  <p className="text-sm text-muted-foreground">Your strongest resume is ready for product design roles.</p>
                   <Button href="/ats-checker" className="mt-5 w-full">Run new scan</Button>
                 </Card>
 
                 <Card className="p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-slate-950 dark:text-white">AI Assistant</h2>
+                    <h2 className="font-bold text-foreground">AI Assistant</h2>
                     <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
                       <Sparkles size={18} />
                     </div>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
                       </button>
                     ))}
                   </div>
-                  <div className="mt-4 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 dark:border-white/10 dark:bg-white/5">
+                  <div className="mt-4 flex items-center gap-2 rounded-2xl border border-border bg-card p-2">
                     <input className="min-w-0 flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-slate-400" placeholder="Ask anything..." />
                     <Button size="icon" aria-label="Send assistant message"><ChevronRight size={17} /></Button>
                   </div>
@@ -242,7 +242,7 @@ export default function DashboardPage() {
 
                 <Card className="p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-slate-950 dark:text-white">Profile completion</h2>
+                    <h2 className="font-bold text-foreground">Profile completion</h2>
                     <Badge variant="success">90%</Badge>
                   </div>
                   <Progress value={90} className="mt-5" />
