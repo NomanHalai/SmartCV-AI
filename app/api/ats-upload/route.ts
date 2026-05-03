@@ -119,6 +119,11 @@ function toResumeData(rawText: string): ResumeData {
         ]
       : [],
     template: 'clean',
+    theme: {
+      accentColor: 'indigo',
+      font: 'inter',
+      density: 'comfortable',
+    },
   }
 }
 
